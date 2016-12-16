@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,7 +38,7 @@ public class SwipableButton extends LinearLayout implements
 
     // Interface
     public interface SBActions{
-        public void  OnSwipe(SwipeDetector.SWIPE_DIR dir, SwipableButton sender);
+        public void  OnSwipe(SwipeDetector.SWIPE_DIR dir, ViewGroup sender);
     }
 
     private  SBActions sbaInterface;
@@ -54,6 +55,8 @@ public class SwipableButton extends LinearLayout implements
         super(context, attrs);
 
         ctxt = context;
+        sbaInterface = intf;
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.swipable_button_layout, this, true);
 
@@ -67,13 +70,16 @@ public class SwipableButton extends LinearLayout implements
 
     // Public methods to set all the parameters
     public void SetText(String str){
-
+        textView.setText(str);
     }
 
-    public int SetImage(){
-
-
+    public int SetImage(int resID){
+        imageView.setImageResource(resID);
         return 1;
+    }
+
+    public void SetInterface(SBActions itf){
+        sbaInterface = itf;
     }
 
 
@@ -87,10 +93,13 @@ public class SwipableButton extends LinearLayout implements
     // The swipe detection handling, but now we have an interface for this.
     @Override
     public void OnSwipe(SwipeDetector.SWIPE_DIR sd){
-        switch ( sd){
+        if(sbaInterface != null){
+            sbaInterface.OnSwipe(sd, this);
+        }
+        /*switch ( sd){
             case SWIPE_DIR_LEFT:
                 Log.d(DEBUG_TAG,"SWIPE_DIR_LEFT, destroying the view... ");
-                removeAllViews();
+                //removeAllViews();
                 break;
             case SWIPE_DIR_RIGHT:
                 Log.d(DEBUG_TAG,"SWIPE_DIR_RIGHT: ");
@@ -104,7 +113,9 @@ public class SwipableButton extends LinearLayout implements
             case SWIPE_DIR_NONE:
                 Log.d(DEBUG_TAG,"SWIPE_DIR_NONE: ");
                 break;
-        }
+        }*/
     }
+
+
 
 }

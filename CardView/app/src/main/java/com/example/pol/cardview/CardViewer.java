@@ -6,6 +6,7 @@ import  com.example.pol.ui_custom_elements.SwipableButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -19,6 +20,7 @@ SwipableButton.SBActions{
 
     TextView topText = null;
     ViewGroup cardLayout = null;
+    private final String DEBUG_TAG = "CardViewer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +37,42 @@ SwipableButton.SBActions{
         // Fill in all the test buttons in the card layouts
         for(int i = 0; i < 12; i++){
 
-            SwipableButton sb = new SwipableButton(this);
+            SwipableButton sb = new SwipableButton(this, null, this);
+            sb.SetImage(R.drawable.poulet_nourriture_salee);
+            sb.SetText("This is the number: " + i);
+
             Button btn = new Button(this);
             btn.setText("ID: " + i);
             btn.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            cardLayout.addView(btn);
 
+            cardLayout.addView(btn);
             cardLayout.addView(sb);
         }
 
     }
 
     @Override
-    public void OnSwipe(SwipeDetector.SWIPE_DIR dir, SwipableButton sender) {
+    public void OnSwipe(SwipeDetector.SWIPE_DIR dir, ViewGroup sender) {
+
+        switch ( dir){
+            case SWIPE_DIR_LEFT:
+                Log.d(DEBUG_TAG,"SWIPE_DIR_LEFT, destroying the view... ");
+                ((SwipableButton)sender).SetInterface(null);
+                cardLayout.removeView(sender);
+                break;
+            case SWIPE_DIR_RIGHT:
+                Log.d(DEBUG_TAG,"SWIPE_DIR_RIGHT: ");
+                break;
+            case SWIPE_DIR_TOP:
+                Log.d(DEBUG_TAG,"SWIPE_DIR_TOP: ");
+                break;
+            case SWIPE_DIR_BOTTOM:
+                Log.d(DEBUG_TAG,"SWIPE_DIR_BOTTOM: ");
+                break;
+            case SWIPE_DIR_NONE:
+                Log.d(DEBUG_TAG,"SWIPE_DIR_NONE: ");
+                break;
+        }
 
     }
 }

@@ -22,7 +22,8 @@ public class SwipeDetector {
     };
 
     // Swipe parameters
-    final private long MAX_SWIPE_TIME_MS = 330;
+    final private long MAX_SWIPE_TIME_MS = 450;
+    final private long MIN_SWIPE_TIME_MS = 10;
     final private long MIN_SWIPE_DIST_DP = 100;
 
     // Interfaces
@@ -123,6 +124,9 @@ public class SwipeDetector {
 
         // Checking if we swiped within the time allowed
         if(endTime - downTimeMillis > MAX_SWIPE_TIME_MS){
+            sd = SWIPE_DIR.SWIPE_DIR_NONE;
+        }
+        if(endTime - downTimeMillis < MIN_SWIPE_TIME_MS){
             sd = SWIPE_DIR.SWIPE_DIR_NONE;
         }
 
