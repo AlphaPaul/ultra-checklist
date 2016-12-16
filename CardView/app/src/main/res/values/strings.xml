@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">CardView</string>
+    <string name="app_name">Ultra Check List</string>
+
+    <string name="title_activity_choice_screen">ChoiceScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="cs_load_button">Load</string>
+    <string name="cs_create_button">Create</string>
+
 </resources>
