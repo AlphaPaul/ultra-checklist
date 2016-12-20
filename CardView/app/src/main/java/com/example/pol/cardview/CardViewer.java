@@ -38,7 +38,7 @@ SwipableButton.SBActions{
         for(int i = 0; i < 12; i++){
 
             SwipableButton sb = new SwipableButton(this, null, this);
-            sb.SetImage(R.drawable.poulet_nourriture_salee);
+            sb.SetImage(R.drawable.food_bar);
             sb.SetText("This is the number: " + i);
 
             Button btn = new Button(this);

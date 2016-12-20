@@ -1,11 +1,20 @@
 <resources>
+
+    <!-- Global Parameters -->
     <string name="app_name">Ultra Check List</string>
+    <string name="file_directory">/Ultra_Checklist/</string><!-- Make sure to surrond it with '/' **** '/'-->
+    <!-- Misc-->
 
+    <!--  Choice Screen -->
     <string name="title_activity_choice_screen">ChoiceScreen</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
     <string name="cs_load_button">Load</string>
     <string name="cs_create_button">Create</string>
+
+    <!--  Create File Dialog -->
+    <string name="cfd_title">Enter the name of the file</string>
+    <string name="cfd_enter_text">uc_</string>
+    <string name="cfd_positive">Validate</string>
+    <string name="cfd_negative">Cancel</string>
+
 
 </resources>
