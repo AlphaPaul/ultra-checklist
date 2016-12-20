@@ -9,12 +9,15 @@ import java.util.List;
 public class RaceFileData {
 
     public class AidStationData{
-
-
+        public String name;
+        public float kmDone;
+        public float dPlusDone;
+        public float kmToNextStation;
+        public float dPlusToNextStation;
     }
 
-    public List<AidStationData> stationsData;
-
+    // The things we need to know:
+    private List<AidStationData> stationsData;
     private String fileName;
 
     // Constructors and Singleton Handling
@@ -27,9 +30,16 @@ public class RaceFileData {
     private RaceFileData() {
     }
 
+    //Getters and setters
     // When using this function, make sure the directory is accessible, uses a full path
     public void SetFileName(String pathAndName){
         fileName = pathAndName;
     }
+
+    public String GetFileName(){
+        return fileName;
+    }
+
+
 
 }

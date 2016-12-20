@@ -74,7 +74,10 @@ public class RaceFileHandler {
 
          Log.d(DEBUG_TAG, "File Created at: " + filename + " is: " + filenameFromPath(filename));
 
-
+         // At this point the file is created but empty.
+         // Not really needed, but a nice way to validate everything is working bf the user
+         // goes into the process of updating the file...
+         RaceFileData.getInstance().SetFileName(filename);
         return RETURN_CODES.SUCCESS;
     }
 

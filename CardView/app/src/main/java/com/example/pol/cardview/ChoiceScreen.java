@@ -90,6 +90,10 @@ public class ChoiceScreen extends AppCompatActivity {
 
 
                 // start the card edit activity
+                Log.d(DEBUG_TAG, "Clicked on Create, all is good, starting Edit Race File Activity");
+                // For now we just start the CardViewer Activity
+                Intent intent = new Intent(choiceScreen, EditRaceFileActivity.class);
+                startActivity(intent);
 
 
             }

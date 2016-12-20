@@ -16,5 +16,11 @@
     <string name="cfd_positive">Validate</string>
     <string name="cfd_negative">Cancel</string>
 
+    <!--  Edit Race File Activity -->
+    <string name="erf_save_button">Save</string>
+    <string name="erf_aid_station_presentation">List of set aid stations:</string>
+    <string name="erf_add_aid_button">Add an Aid Station</string>
+    <string name="erf_add_timer_button">Add a timed interrupt</string>
+
 
 </resources>
