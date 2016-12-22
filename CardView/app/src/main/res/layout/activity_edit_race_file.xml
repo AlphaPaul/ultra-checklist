@@ -43,13 +43,13 @@
                     android:textSize="18sp"
                     android:textStyle="normal|bold" />
 
-                <Button
-                    android:text="@string/erf_add_aid_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/erf_add_aid_button" />
-
             </LinearLayout>
+
+            <Button
+                android:text="@string/erf_add_aid_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/erf_add_aid_button" />
 
             <LinearLayout
                 android:orientation="vertical"

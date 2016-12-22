@@ -1,6 +1,8 @@
 package com.example.pol.utilities;
 
+import java.util.ArrayList;
 import java.util.List;
+import com.example.pol.utilities.AidStationData;
 
 /**
  * Created by pol on 20/12/2016.
@@ -8,16 +10,9 @@ import java.util.List;
 
 public class RaceFileData {
 
-    public class AidStationData{
-        public String name;
-        public float kmDone;
-        public float dPlusDone;
-        public float kmToNextStation;
-        public float dPlusToNextStation;
-    }
 
     // The things we need to know:
-    private List<AidStationData> stationsData;
+    private ArrayList<AidStationData> stationsData;
     private String fileName;
 
     // Constructors and Singleton Handling
@@ -28,6 +23,8 @@ public class RaceFileData {
     }
 
     private RaceFileData() {
+        stationsData = new ArrayList<AidStationData>();
+        addDummyAidStation();
     }
 
     //Getters and setters
@@ -38,6 +35,30 @@ public class RaceFileData {
 
     public String GetFileName(){
         return fileName;
+    }
+
+
+    public ArrayList<AidStationData> GetStations(){
+        return stationsData;
+    }
+
+    public void AddStation(AidStationData data){
+        // TODO: Order the stations based on km
+        stationsData.add(data);
+
+    }
+
+    private void addDummyAidStation(){
+
+        AidStationData s = new AidStationData();
+        s.name = "Dummy Station";
+        s.kmDone = -10.5;
+        s.dPlusDone = 251;
+        s.dPlusToNextStation = 5610;
+        s.kmToNextStation = 6123;
+        stationsData.add(s);
+
+
     }
 
 

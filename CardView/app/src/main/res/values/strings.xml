@@ -22,5 +22,21 @@
     <string name="erf_add_aid_button">Add an Aid Station</string>
     <string name="erf_add_timer_button">Add a timed interrupt</string>
 
+    <!--  Edit Aid Station Stops -->
+    <string name="eas_save_button">Save</string>
+    <string name="eas_add_todo_button">Add TODO Action</string>
+    <string name="eas_name_hint">Name Of the Aid Station</string>
+    <string name="eas_name_text">Name</string>
+    <string name="eas_km_done_text">Km Point</string>
+    <string name="eas_km_done_hint">Km Already Run</string>
+    <string name="eas_dplus_done_text">D+</string>
+    <string name="eas_dplus_done_hint">Aggregated Climbing</string>
+    <string name="eas_km_to_next_text">Km to Next</string>
+    <string name="eas_km_to_next_hint">Km to Next Station</string>
+    <string name="eas_dplus_to_next_text">D+ to Next</string>
+    <string name="eas_dplus_to_next_hint">D+ to Next Station</string>
+
+
+
 
 </resources>

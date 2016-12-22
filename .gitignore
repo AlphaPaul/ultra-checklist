@@ -1,0 +1,13 @@
+*.iml
+.gradle
+CardView/local.properties
+CardView/.idea/workspace.xml
+CardView/.idea/libraries
+.DS_Store
+CardView/build
+CardView/captures
+.externalNativeBuild
+*.db
+*.apk
+*.ap_
+CardView/RawImages
