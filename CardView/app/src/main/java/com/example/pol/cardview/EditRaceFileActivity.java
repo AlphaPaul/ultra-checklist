@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.pol.utilities.AidStationData;
 import com.example.pol.utilities.RaceFileData;
+import com.example.pol.utilities.RaceFileHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class EditRaceFileActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setText(getResources().getString(R.string.erf_save_button) + " " + RaceFileData.getInstance().GetFileName(false));
+
         addAidStationButton = (Button)findViewById(R.id.erf_add_aid_button);
         addAidStationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +51,6 @@ public class EditRaceFileActivity extends AppCompatActivity {
                 handleAddAidStation();
             }
         });
-
     }
 
     // Make sure everything is loaded when the user enters the activity.
@@ -58,9 +60,19 @@ public class EditRaceFileActivity extends AppCompatActivity {
         DisplayAidStations();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        finish();
+        // on Back press we finish the activity
+        super.onBackPressed();
+    }
+
     // Buton Handlers
     private void handleSaveButton(){
-
+        // Save the file
+        RaceFileHandler.SaveFile();
+        finish();
     }
 
     private void handleAddAidStation(){

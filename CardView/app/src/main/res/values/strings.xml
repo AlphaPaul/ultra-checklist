@@ -16,6 +16,12 @@
     <string name="cfd_positive">Validate</string>
     <string name="cfd_negative">Cancel</string>
 
+    <!--  Load File Dialog -->
+    <string name="lfd_title">Choose the file to load</string>
+    <string name="lfd_positive">Load</string>
+    <string name="lfd_negative">Cancel</string>
+
+
     <!--  Edit Race File Activity -->
     <string name="erf_save_button">Save</string>
     <string name="erf_aid_station_presentation">List of set aid stations:</string>

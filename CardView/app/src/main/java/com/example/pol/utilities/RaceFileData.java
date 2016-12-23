@@ -13,7 +13,6 @@ public class RaceFileData {
 
     // The things we need to know:
     private ArrayList<AidStationData> stationsData;
-    private String fileName;
 
     // Constructors and Singleton Handling
     private static RaceFileData ourInstance = new RaceFileData();
@@ -29,12 +28,10 @@ public class RaceFileData {
 
     //Getters and setters
     // When using this function, make sure the directory is accessible, uses a full path
-    public void SetFileName(String pathAndName){
-        fileName = pathAndName;
-    }
 
-    public String GetFileName(){
-        return fileName;
+
+    public String GetFileName(boolean completePath){
+        return RaceFileHandler.GetActiveFileName(completePath);
     }
 
 

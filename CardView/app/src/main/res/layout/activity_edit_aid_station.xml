@@ -63,7 +63,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     android:ems="10"
                     android:id="@+id/eas_km_done_edit"
                     android:layout_weight="1"
@@ -86,7 +86,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberSigned|numberDecimal"
                     android:ems="10"
                     android:id="@+id/eas_dplus_done_edit"
                     android:layout_weight="1"
@@ -108,7 +108,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     android:ems="10"
                     android:id="@+id/eas_km_to_next_edit"
                     android:layout_weight="1"
@@ -131,7 +131,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     android:ems="10"
                     android:id="@+id/eas_dplus_to_next_edit"
                     android:layout_weight="1"

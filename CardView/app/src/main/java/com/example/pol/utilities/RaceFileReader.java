@@ -22,7 +22,7 @@ public class RaceFileReader {
         RaceFileData data = RaceFileData.getInstance();
 
         if(fileName == null){
-            path = data.GetFileName();
+            path = data.GetFileName(true);
             if(path == null){
                 return RETURN_CODES.INVALID_FILE_NAME;
             }

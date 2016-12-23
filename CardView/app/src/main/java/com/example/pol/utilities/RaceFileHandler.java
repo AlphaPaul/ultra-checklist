@@ -1,13 +1,10 @@
 package com.example.pol.utilities;
 
-import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
-
-import static android.R.attr.id;
 
 /**
  * Created by pol on 19/12/2016.
@@ -72,23 +69,31 @@ public class RaceFileHandler {
              return RETURN_CODES.CREATION_ERROR;
          }
 
-         Log.d(DEBUG_TAG, "File Created at: " + filename + " is: " + filenameFromPath(filename));
+         Log.d(DEBUG_TAG, "File Created at: " + filename + " is: " + FileNameFromPath(filename));
 
          // At this point the file is created but empty.
-         // Not really needed, but a nice way to validate everything is working bf the user
-         // goes into the process of updating the file...
-         RaceFileData.getInstance().SetFileName(filename);
         return RETURN_CODES.SUCCESS;
     }
 
-    public static String getActiveFileName(boolean completePath){
+    public static RETURN_CODES LoadFile(File file){
+        if(file.isDirectory()){
+            return RETURN_CODES.DIRECTORY_ERROR;
+        }
+        // Setting the filename of the current file
+        filename = file.toString();
+
+
+        return RETURN_CODES.SUCCESS;
+    }
+
+    public static String GetActiveFileName(boolean completePath){
         if(filename != null){
             File f = new File(filename);
             if(f.exists()){
                 if(completePath)
                     return filename;
                 else
-                    return filenameFromPath(filename);
+                    return FileNameFromPath(filename);
             }
             else{
                 return null;
@@ -97,6 +102,37 @@ public class RaceFileHandler {
         else {
             return null;
         }
+    }
+
+    public static boolean SaveFile(){
+        return writer.CommitRaceFile();
+    }
+
+    public static File[] GetFilesInDefaultDirectory(){
+        return GetFilesInDirectory(GetSaveDirectory());
+    }
+
+    public static File GetSaveDirectory(){
+        String path = FILE_DIRECTORY;
+
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), path);
+        return file;
+    }
+
+
+    public static File[] GetFilesInDirectory(File path){
+        if(!path.isDirectory()){
+            Log.d(DEBUG_TAG, "Invalid path for the directory");
+            return null;
+        }
+        File[] files = path.listFiles();
+
+        for(File f : files){
+            Log.d(DEBUG_TAG, "File Found: " + f.getAbsoluteFile() + " toString: " + f.toString());
+        }
+
+        return files;
+
     }
 
 
@@ -112,7 +148,7 @@ public class RaceFileHandler {
 
     // Utility methods only for this class
 
-    private static String filenameFromPath(String path){
+    public static String FileNameFromPath(String path){
         String ret =path.substring(path.lastIndexOf('/') + 1);
         //Log.d(DEBUG_TAG, "Filename cut from: " + path + " to: " + ret);
         return ret;

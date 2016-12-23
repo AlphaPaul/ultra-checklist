@@ -28,6 +28,10 @@ public class EditAidStationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void handleSave(){
         // reads all the components of EAS and sets them to a new aidStation data.
