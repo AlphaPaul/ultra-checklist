@@ -14,7 +14,7 @@ public class RaceFileStrings {
     public static final String HEADER_AID_STATIONS= "aid_stations";
     public static final String HEADER_ALARMS = "alarms";
     public static final String HEADER_RACE_TRACE = "race_trace";
-    public static final String HEADER_FILE_PARAMETERS = "race_trace";
+    public static final String HEADER_FILE_PARAMETERS = "file_parameters";
 
 
     // File Parameters Names

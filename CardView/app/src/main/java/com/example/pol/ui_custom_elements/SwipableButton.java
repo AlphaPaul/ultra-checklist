@@ -4,6 +4,9 @@ import com.example.pol.cardview.R;
 import com.example.pol.interactions.SwipeDetector;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -63,6 +66,8 @@ public class SwipableButton extends LinearLayout implements
         // Find the view in the layout
         textView = (TextView)findViewById(R.id.sb_text);
         imageView = (ImageView)findViewById(R.id.sb_image);
+
+
         // Gesture detection
         swipeDetector = new SwipeDetector(this);
 

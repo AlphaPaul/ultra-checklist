@@ -156,6 +156,8 @@ public class ChoiceScreen extends AppCompatActivity {
                         Log.d(DEBUG_TAG, "File Found: " + f.toString());
                         fileSelected = f;
                         RaceFileHandler.LoadFile(f);
+                        Intent intent = new Intent(choiceScreen, EditRaceFileActivity.class);
+                        startActivity(intent);
                         fileDialog.dismiss();
                         break;
                     }

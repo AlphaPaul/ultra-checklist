@@ -23,7 +23,6 @@ public class RaceFileData {
 
     private RaceFileData() {
         stationsData = new ArrayList<AidStationData>();
-        addDummyAidStation();
     }
 
     //Getters and setters
@@ -45,6 +44,11 @@ public class RaceFileData {
 
     }
 
+    public void ClearAllData(){
+        stationsData.clear();
+
+    }
+
     private void addDummyAidStation(){
 
         AidStationData s = new AidStationData();
@@ -54,7 +58,6 @@ public class RaceFileData {
         s.dPlusToNextStation = 5610;
         s.kmToNextStation = 6123;
         stationsData.add(s);
-
 
     }
 

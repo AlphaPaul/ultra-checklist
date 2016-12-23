@@ -41,6 +41,13 @@
     <string name="eas_km_to_next_hint">Km to Next Station</string>
     <string name="eas_dplus_to_next_text">D+ to Next</string>
     <string name="eas_dplus_to_next_hint">D+ to Next Station</string>
+    <string name="eas_todo_select_image">Select Image</string>
+    <string name="eas_todo_select_text">Select Text</string>
+    <string name="eas_cancel">Cancel</string>
+
+    <!--  Drawable Descriptions -->
+    <string name="drawable_action_meditate">Relax, Focus or Stretch</string>
+    <string name="drawable_action_sleep">Sleep or Rest</string>
 
 
 

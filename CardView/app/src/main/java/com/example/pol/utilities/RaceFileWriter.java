@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 public class RaceFileWriter {
 
-    public final String WRITER_INDENT = "    ";
-
     private final String DEBUG_TAG = "RaceFileWriter";
 
     // Constructor
@@ -44,7 +42,7 @@ public class RaceFileWriter {
         FileOutputStream out = openFileStream(RaceFileHandler.GetActiveFileName(true));
         RaceFileData data = RaceFileData.getInstance();
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out));
-        writer.setIndent(WRITER_INDENT);
+        writer.setIndent(RaceFileStrings.JSON_INDENT);
         // Create the base object
         try{
             writer.beginObject();
@@ -170,7 +168,7 @@ public class RaceFileWriter {
 
 
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out));
-        writer.setIndent(WRITER_INDENT);
+        writer.setIndent(RaceFileStrings.JSON_INDENT);
         try {
             // Main Oject
             writer.beginObject();

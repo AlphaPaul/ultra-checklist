@@ -82,6 +82,8 @@ public class RaceFileHandler {
         // Setting the filename of the current file
         filename = file.toString();
 
+        // Updating the Data class with the file
+        reader.FillInRaceData();
 
         return RETURN_CODES.SUCCESS;
     }
