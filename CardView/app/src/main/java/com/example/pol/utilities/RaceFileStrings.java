@@ -29,5 +29,10 @@ public class RaceFileStrings {
     public static final String AS_DP_NEXT = "dp_next";
     public static final String AS_TODOS = "todos";
 
+    // Todos action
+    public static final String AS_TODOS_IMAGE_ID = "id";
+    public static final String AS_TODOS_TEXT = "text";
+
+
 
 }

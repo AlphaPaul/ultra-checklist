@@ -118,12 +118,46 @@ public class RaceFileWriter {
             writer.name(RaceFileStrings.AS_DP_DONE).value(data.dPlusDone);
             writer.name(RaceFileStrings.AS_KM_NEXT).value(data.kmToNextStation);
             writer.name(RaceFileStrings.AS_DP_NEXT).value(data.dPlusToNextStation);
+            writeTodos(writer, data.todos);
+            writer.endObject();
+        }
+        catch (Exception e){
+            ret = false;
+            Log.d(DEBUG_TAG, "Exception in writeOneAidStation: " + e.toString());
+        }
+        return ret;
+    }
+
+    private boolean writeTodos(JsonWriter writer, ArrayList<TodoActionsData> todos){
+        boolean ret = true;
+        try{
+            writer.name(RaceFileStrings.AS_TODOS);
+            writer.beginArray();
+            for(TodoActionsData todo : todos){
+                writeOneTodo(writer, todo);
+            }
+            writer.endArray();
+
+        }
+        catch (Exception e){
+            ret = false;
+            Log.d(DEBUG_TAG, "Exception in writeTodos: " + e.toString());
+        }
+        return ret;
+    }
+
+    private boolean writeOneTodo(JsonWriter writer, TodoActionsData data){
+        boolean ret = true;
+        try{
+            writer.beginObject();
+            writer.name(RaceFileStrings.AS_TODOS_IMAGE_ID).value(data.id);
+            writer.name(RaceFileStrings.AS_TODOS_TEXT).value(data.text);
             // TODO: Add the todo lists
             writer.endObject();
         }
         catch (Exception e){
             ret = false;
-            Log.d(DEBUG_TAG, "Exception in writeFileParameters: " + e.toString());
+            Log.d(DEBUG_TAG, "Exception in writeOneTodo: " + e.toString());
         }
         return ret;
     }

@@ -2,6 +2,7 @@ package com.example.pol.cardview;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Debug;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.example.pol.ui_custom_elements.IdStringPair;
 import com.example.pol.ui_custom_elements.ImageIdAdapter;
 import com.example.pol.utilities.AidStationData;
 import com.example.pol.utilities.RaceFileData;
+import com.example.pol.utilities.TodoActionsData;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -39,8 +41,8 @@ public class EditAidStationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_aid_station);
 
         idToStringList = new ArrayList<>();
-        idToStringList.add(new IdStringPair(R.drawable.action_meditate, getString(R.string.drawable_action_meditate)));
-        idToStringList.add(new IdStringPair(R.drawable.action_sleep_baby, getString(R.string.drawable_action_sleep)));
+        idToStringList.add(new IdStringPair(R.drawable.action_meditate_mini, getString(R.string.drawable_action_meditate)));
+        idToStringList.add(new IdStringPair(R.drawable.action_sleep_baby_mini, getString(R.string.drawable_action_sleep)));
 
         saveButton = (Button)findViewById(R.id.eas_save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +70,36 @@ public class EditAidStationActivity extends AppCompatActivity {
     private void handleSave(){
         // reads all the components of EAS and sets them to a new aidStation data.
 
+
         String name = getEditTextValue(R.id.eas_name_edit);
-        double kmDone = Double.parseDouble(getEditTextValue(R.id.eas_km_done_edit));
-        double dpDone = Double.parseDouble(getEditTextValue(R.id.eas_dplus_done_edit));
-        double kmNext = Double.parseDouble(getEditTextValue(R.id.eas_km_to_next_edit));
-        double dpNext = Double.parseDouble(getEditTextValue(R.id.eas_dplus_to_next_edit));
+        double kmDone = 0;
+        double dpDone = 0;
+        double kmNext = 0;
+        double dpNext = 0;
+        try{
+            kmDone = Double.parseDouble(getEditTextValue(R.id.eas_km_done_edit));
+        }
+        catch (Exception e){
+            Log.d(DEBUG_TAG, "Value for kmDone is Invalid");
+        }
+        try{
+            dpDone = Double.parseDouble(getEditTextValue(R.id.eas_dplus_done_edit));
+        }
+        catch (Exception e){
+            Log.d(DEBUG_TAG, "Value for dpDone is Invalid");
+        }
+        try{
+            kmNext = Double.parseDouble(getEditTextValue(R.id.eas_km_to_next_edit));
+        }
+        catch (Exception e){
+            Log.d(DEBUG_TAG, "Value for kmNext is Invalid");
+        }
+        try{
+            dpNext = Double.parseDouble(getEditTextValue(R.id.eas_dplus_to_next_edit));
+        }
+        catch (Exception e){
+            Log.d(DEBUG_TAG, "Value for dpNext is Invalid");
+        }
 
         RaceFileData data = RaceFileData.getInstance();
         AidStationData s = new AidStationData();
@@ -81,8 +108,29 @@ public class EditAidStationActivity extends AppCompatActivity {
         s.dPlusDone = dpDone;
         s.dPlusToNextStation = kmNext;
         s.kmToNextStation = dpNext;
+
+        // Saving all the todos
+        // Creating the array
+        ArrayList<TodoActionsData> array = new ArrayList<>();
+
+        // Getting the layout holding all the data
+        ViewGroup todoLayout = (ViewGroup) findViewById(R.id.eas_todo_layout);
+        int count = todoLayout.getChildCount();
+        for (int i =0 ; i < count ; i ++){
+            View v = todoLayout.getChildAt(i);
+            TextView text = (TextView) v.findViewById(R.id.sb_text);
+            if(text == null){
+                continue;
+            }
+            ImageView img = (ImageView) v.findViewById(R.id.sb_image);
+            Integer id = (Integer) img.getTag();
+            array.add(new TodoActionsData(id.intValue(), text.getText().toString()));
+        }
+        s.todos=array;
         data.AddStation(s);
     }
+
+
 
     private String getEditTextValue(int editTextId){
         return ((EditText)findViewById(editTextId)).getText().toString();
@@ -108,7 +156,7 @@ public class EditAidStationActivity extends AppCompatActivity {
                 IdStringPair pairSelected = adapter.getItem(position);
 
                 // Launch the next dialog to set the card's trext
-                launchTextDialog(pairSelected);
+                launchTodoTextDialog(pairSelected);
                 Log.d(DEBUG_TAG, "Clicked on: " + pairSelected.toString());
                 addTodoDialog.dismiss();
             }
@@ -132,18 +180,18 @@ public class EditAidStationActivity extends AppCompatActivity {
 
     private Dialog textEditDialog;
     private IdStringPair savedPair;
-    private void launchTextDialog(IdStringPair pair){
+    private void launchTodoTextDialog(IdStringPair pair){
 
         savedPair = pair;
         // Create the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        builder.setView(inflater.inflate((R.layout.create_file_dialog), null));
+        builder.setView(inflater.inflate((R.layout.add_todo_text), null));
         builder.setPositiveButton(R.string.cfd_positive, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // retrieve the value set by the user
-                EditText edit = (EditText)textEditDialog.findViewById(R.id.cfd_text_edit);
+                EditText edit = (EditText)textEditDialog.findViewById(R.id.eas_todo_text_edit);
                 String userText = edit.getText().toString();
                 Log.d(DEBUG_TAG, "Text entered : " + userText);
                 createTodoCard(savedPair.id, userText);
@@ -170,11 +218,26 @@ public class EditAidStationActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View cardView = inflater.inflate(R.layout.swipable_button_layout, null);
 
+
         TextView txt = (TextView) cardView.findViewById(R.id.sb_text);
         txt.setText(userText);
 
         ImageView img = (ImageView) cardView.findViewById(R.id.sb_image);
         img.setImageResource(id);
+        // We set a tag here with the id, so as not to create another cusom class
+        img.setTag(new Integer(id));
+
+        // Now set the On Long Click Listener needed to Edit the Text
+        cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                TextView txt = (TextView) view.findViewById(R.id.sb_text);
+                ImageView img = (ImageView) view.findViewById(R.id.sb_image);
+                Log.d(DEBUG_TAG, "On Long Click detected on: " + txt.getText());
+                return true;
+            }
+        });
+
 
         todoLayout.addView(cardView);
 

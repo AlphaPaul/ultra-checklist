@@ -27,6 +27,7 @@
     <string name="erf_aid_station_presentation">List of set aid stations:</string>
     <string name="erf_add_aid_button">Add an Aid Station</string>
     <string name="erf_add_timer_button">Add a timed interrupt</string>
+    <string name="erf_todo_description">Todos Listed: </string>
 
     <!--  Edit Aid Station Stops -->
     <string name="eas_save_button">Save</string>
@@ -43,6 +44,7 @@
     <string name="eas_dplus_to_next_hint">D+ to Next Station</string>
     <string name="eas_todo_select_image">Select Image</string>
     <string name="eas_todo_select_text">Select Text</string>
+    <string name="eas_todo_enter_text">Enter Details of the TODO Action</string>
     <string name="eas_cancel">Cancel</string>
 
     <!--  Drawable Descriptions -->

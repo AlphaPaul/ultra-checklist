@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by pol on 20/12/2016.
@@ -77,7 +78,7 @@ public class RaceFileReader {
             reader.endObject();
         }
         catch(Exception e){
-            Log.d(DEBUG_TAG, "Exception in ReadFileParameters: " + e.toString());
+            Log.d(DEBUG_TAG, "Exception in readFileParameters: " + e.toString());
         }
         return ret;
     }
@@ -89,18 +90,18 @@ public class RaceFileReader {
             while(reader.hasNext()){
                 readOneAidStation(reader, data);
             }
-
+            reader.endArray();
         }
         catch(Exception e){
-            Log.d(DEBUG_TAG, "Exception in ReadFileParameters: " + e.toString());
+            Log.d(DEBUG_TAG, "Exception in readAidStations: " + e.toString());
         }
-
         return ret;
     }
 
     private boolean readOneAidStation(JsonReader reader, RaceFileData data){
         boolean ret = true;
         AidStationData as = new AidStationData();
+        as.todos = new ArrayList<>();
         try{
             reader.beginObject();
             while(reader.hasNext()){
@@ -121,7 +122,28 @@ public class RaceFileReader {
                     as.dPlusToNextStation = reader.nextDouble();
                 }
                 else if(name.equals(RaceFileStrings.AS_TODOS)){
-                    //TODO: handle the todo list
+                    reader.beginArray();
+                    while(reader.hasNext()){
+                        reader.beginObject();
+                        String text = "";
+                        int id = 0;
+                        while (reader.hasNext()){
+                            String n = reader.nextName();
+                            if(n.equals(RaceFileStrings.AS_TODOS_IMAGE_ID)){
+                                id = reader.nextInt();
+                            }
+                            else if(n.equals(RaceFileStrings.AS_TODOS_TEXT)){
+                                text = reader.nextString();
+                            }
+                            else{
+                                Log.d(DEBUG_TAG, "Unknown name reading TODOS : " + n);
+                            }
+                        }
+                        reader.endObject();
+                        // We have finished TODOU object, create the associated data object
+                        as.todos.add(new TodoActionsData(id, text));
+                    }
+                    reader.endArray();
                 }
                 else{
                     Log.d(DEBUG_TAG, "unknown aid station parameter: " + name);

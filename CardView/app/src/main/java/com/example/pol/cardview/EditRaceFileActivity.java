@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -89,16 +91,32 @@ public class EditRaceFileActivity extends AppCompatActivity {
 
         for(int i = stationsLayout.getChildCount() - 1; i < stations.size(); i ++){
 
-            View sbView = getLayoutInflater().inflate(R.layout.swipable_button_layout, null);
-            stationsLayout.addView(sbView);
-            TextView txt = (TextView) sbView.findViewById(R.id.sb_text);
+            View dispView = getLayoutInflater().inflate(R.layout.race_event_display, null);
+            stationsLayout.addView(dispView);
+            TextView txt = (TextView) dispView.findViewById(R.id.red_text_view);
             txt.setText(generateStationString(stations.get(i)));
-        }
+            ImageView image = (ImageView) dispView.findViewById(R.id.red_image);
+            image.setImageResource(R.drawable.plastic_cup_mini);
+            ImageButton btn =  (ImageButton) dispView.findViewById(R.id.red_edit_button);
 
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ViewGroup displayLayout = (ViewGroup) view.getParent();
+                    TextView txt = (TextView) displayLayout.findViewById(R.id.red_text_view);
+                    if(txt != null){
+                        Log.d(DEBUG_TAG, "Text read is: " + txt.getText());
+                    }
+                    ViewGroup stationsLayout = (ViewGroup) displayLayout.getParent();
+                    int index = stationsLayout.indexOfChild(displayLayout);
+                    Log.d(DEBUG_TAG, "Index of the button in the layout is: " + index);
+                }
+            });
+        }
     }
 
     private String generateStationString(AidStationData station){
-        String ret = station.name + " @km: " +  station.kmDone + "-" + station.dPlusDone + " m D+";
+        String ret = station.name + " @km: " +  station.kmDone + " - " + station.dPlusDone + "mD+ " + getString(R.string.erf_todo_description) + station.todos.size();
         return ret;
     }
 
