@@ -47,6 +47,13 @@
     <string name="eas_todo_enter_text">Enter Details of the TODO Action</string>
     <string name="eas_cancel">Cancel</string>
 
+    <!--  Adding todos custom class -->
+    <string name="tev_add_todo_button">Add TODO Action</string>
+    <string name="tev_todo_select_image">Select Image</string>
+    <string name="tev_todo_select_text">Select Text</string>
+    <string name="tev_todo_enter_text">Enter Details of the TODO Action</string>
+
+
     <!--  Drawable Descriptions -->
     <string name="drawable_action_meditate">Relax, Focus or Stretch</string>
     <string name="drawable_action_sleep">Sleep or Rest</string>

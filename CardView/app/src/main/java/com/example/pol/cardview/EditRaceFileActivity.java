@@ -28,10 +28,13 @@ public class EditRaceFileActivity extends AppCompatActivity {
 
     private Button saveButton = null;
     private Button addAidStationButton = null;
+    private AppCompatActivity thisActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        thisActivity = this;
+
         setContentView(R.layout.activity_edit_race_file);
 
 
@@ -88,8 +91,9 @@ public class EditRaceFileActivity extends AppCompatActivity {
 
         ArrayList<AidStationData> stations = data.GetStations();
         ViewGroup stationsLayout = (ViewGroup) findViewById(R.id.erf_aid_station_layout);
+        stationsLayout.removeAllViews();
 
-        for(int i = stationsLayout.getChildCount() - 1; i < stations.size(); i ++){
+        for(int i = 0 ; i < stations.size(); i ++){
 
             View dispView = getLayoutInflater().inflate(R.layout.race_event_display, null);
             stationsLayout.addView(dispView);
@@ -110,13 +114,16 @@ public class EditRaceFileActivity extends AppCompatActivity {
                     ViewGroup stationsLayout = (ViewGroup) displayLayout.getParent();
                     int index = stationsLayout.indexOfChild(displayLayout);
                     Log.d(DEBUG_TAG, "Index of the button in the layout is: " + index);
+                    Intent intent = new Intent(thisActivity, EditAidStationActivity.class);
+                    intent.putExtra(Intent.EXTRA_INDEX, index);
+                    startActivity(intent);
                 }
             });
         }
     }
 
     private String generateStationString(AidStationData station){
-        String ret = station.name + " @km: " +  station.kmDone + " - " + station.dPlusDone + "mD+ " + getString(R.string.erf_todo_description) + station.todos.size();
+        String ret = station.name + " @km " +  station.kmDone + " - " + station.dPlusDone + "mD+ " + getString(R.string.erf_todo_description) + station.todos.size();
         return ret;
     }
 

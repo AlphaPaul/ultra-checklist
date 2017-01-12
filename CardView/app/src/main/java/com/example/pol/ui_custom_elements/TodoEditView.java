@@ -1,12 +1,9 @@
-package com.example.pol.cardview;
+package com.example.pol.ui_custom_elements;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Debug;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,197 +17,125 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.pol.ui_custom_elements.IdStringPair;
-import com.example.pol.ui_custom_elements.ImageIdAdapter;
-import com.example.pol.ui_custom_elements.TodoEditView;
-import com.example.pol.utilities.AidStationData;
-import com.example.pol.utilities.RaceFileData;
+import com.example.pol.cardview.R;
 import com.example.pol.utilities.TodoActionsData;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
-public class EditAidStationActivity extends AppCompatActivity {
+/**
+ * Created by pol on 12/01/2017.
+ */
 
-    private Button saveButton = null;
-    private Button addTodoButton = null;
-    private LinearLayout mainLayout = null;
-    private boolean addEntry = true;
-    private int index = -1;
-    private TodoEditView todoEditView = null;
+public class TodoEditView extends LinearLayout {
+
+    private final String DEBUG_TAG = "Todo Edit View";
+    private Context context = null;
+    private Button addTodo = null;
+    private LinearLayout todoCards = null;
+
 
     private ArrayList<IdStringPair> idToStringList;
-    private final String DEBUG_TAG = "EditAidStationActivity";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_aid_station);
+    public TodoEditView(Context context) {
+        super(context);
 
-        todoEditView = new TodoEditView(this);
+        Log.d(DEBUG_TAG, "Setting up custom todo add / edit view");
 
-        // Loading the data if we have received an EXTRA_INDEX
-        index = getIntent().getIntExtra(Intent.EXTRA_INDEX, -1);
-        if(index >= 0){
-            addEntry = false;
-            loadStationData();
-        }
-        // Else we are creating a new aid station
-        else{
-            addEntry = true;
-        }
+        this.context = context;
 
-        idToStringList = new ArrayList<>();
-        idToStringList.add(new IdStringPair(R.drawable.action_meditate_mini, getString(R.string.drawable_action_meditate)));
-        idToStringList.add(new IdStringPair(R.drawable.action_sleep_baby_mini, getString(R.string.drawable_action_sleep)));
+        setOrientation(LinearLayout.VERTICAL);
 
-        saveButton = (Button)findViewById(R.id.eas_save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleSave();
-                finish();
-            }
-        });
+        // Add the Ass aid station button, note that we could do it withe an inflater.
+        addTodo = new Button(context);
+        addTodo.setText(getResources().getString(R.string.tev_add_todo_button));
 
-        addTodoButton = (Button)findViewById(R.id.eas_add_todo_button);
-        addTodoButton.setOnClickListener(new View.OnClickListener() {
+        addTodo.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 popUpImagePicker(null);
             }
         });
 
-        mainLayout = (LinearLayout)findViewById(R.id.eas_scrollable_layout);
+        addView(addTodo);
 
-        // Add the final add Todos view to the layout
-        mainLayout.addView(todoEditView);
+        todoCards = new LinearLayout(context);
+        todoCards.setOrientation(LinearLayout.VERTICAL);
+        addView(todoCards);
+
+        idToStringList = new ArrayList<>();
+        idToStringList.add(new IdStringPair(R.drawable.action_meditate_mini, getResources().getString(R.string.drawable_action_meditate)));
+        idToStringList.add(new IdStringPair(R.drawable.action_sleep_baby_mini, getResources().getString(R.string.drawable_action_sleep)));
+
 
     }
 
-    private void loadStationData(){
-        RaceFileData data = RaceFileData.getInstance();
-        AidStationData s = data.GetAidStationAtIndex(index);
-        setEditTextValue(R.id.eas_name_edit, s.name);
-        setEditTextValue(R.id.eas_km_done_edit,""+ s.kmDone);
-        setEditTextValue(R.id.eas_dplus_done_edit,""+ s.dPlusDone);
-        setEditTextValue(R.id.eas_km_to_next_edit,""+ s.kmToNextStation);
-        setEditTextValue(R.id.eas_dplus_to_next_edit,""+ s.dPlusToNextStation);
+    public void SetAllTheTodos(ArrayList<TodoActionsData> array){
 
-        // Setting the todos also in the todos layout
-        todoEditView.SetAllTheTodos(s.todos);
-
+        // Getting the layout holding all the todos
+        int count = array.size();
+        for (int i =0 ; i < count ; i ++){
+            createTodoCard(array.get(i).id, array.get(i).text);
+        }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public ArrayList<TodoActionsData> GetAllTheTodos(){
+        ArrayList<TodoActionsData> array = new ArrayList<>();
+        // Going through the layout holding all the data
+        int count = todoCards.getChildCount();
+        for (int i =0 ; i < count ; i ++){
+            View v = todoCards.getChildAt(i);
+            TextView text = (TextView) v.findViewById(R.id.tde_text_view);
+            if(text == null){
+                continue;
+            }
+            ImageView img = (ImageView) v.findViewById(R.id.tde_image);
+            Integer id = (Integer) img.getTag();
+            array.add(new TodoActionsData(id.intValue(), text.getText().toString()));
+        }
+
+        return  array;
     }
-
-    private void handleSave(){
-        // reads all the components of EAS and sets them to a new aidStation data.
-
-        String name = getEditTextValue(R.id.eas_name_edit);
-        double kmDone = 0;
-        double dpDone = 0;
-        double kmNext = 0;
-        double dpNext = 0;
-        try{
-            kmDone = Double.parseDouble(getEditTextValue(R.id.eas_km_done_edit));
-        }
-        catch (Exception e){
-            Log.d(DEBUG_TAG, "Value for kmDone is Invalid");
-        }
-        try{
-            dpDone = Double.parseDouble(getEditTextValue(R.id.eas_dplus_done_edit));
-        }
-        catch (Exception e){
-            Log.d(DEBUG_TAG, "Value for dpDone is Invalid");
-        }
-        try{
-            kmNext = Double.parseDouble(getEditTextValue(R.id.eas_km_to_next_edit));
-        }
-        catch (Exception e){
-            Log.d(DEBUG_TAG, "Value for kmNext is Invalid");
-        }
-        try{
-            dpNext = Double.parseDouble(getEditTextValue(R.id.eas_dplus_to_next_edit));
-        }
-        catch (Exception e){
-            Log.d(DEBUG_TAG, "Value for dpNext is Invalid");
-        }
-
-        RaceFileData data = RaceFileData.getInstance();
-        AidStationData s = new AidStationData();
-        s.name = name;
-        s.kmDone = kmDone;
-        s.dPlusDone = dpDone;
-        s.dPlusToNextStation = kmNext;
-        s.kmToNextStation = dpNext;
-
-        // Saving all the todos
-        s.todos = todoEditView.GetAllTheTodos();
-
-        if(addEntry){
-            data.AddStation(s);
-        }
-        else{
-            data.ReplaceStation(index, s);
-        }
-
-    }
-
-
-    private String getEditTextValue(int editTextId){
-        return ((EditText)findViewById(editTextId)).getText().toString();
-    }
-
-    private void setEditTextValue(int editTextId, String value){
-        EditText ed = ((EditText)findViewById(editTextId));
-        ed.setText(value);
-    }
-
-
 
     private Dialog addTodoDialog;
     private void popUpImagePicker(AdapterView.OnItemClickListener onItemClickListener){
-        // Create Dialog W/ ListView
 
-        // Create the alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Create Dialog W/ ListView
 
-        final ImageIdAdapter adapter = new ImageIdAdapter(this, idToStringList);
+            // Create the alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        ListView imgView = new ListView(this);
-        imgView.setAdapter(adapter);
-        builder.setView(imgView);
+            final ImageIdAdapter adapter = new ImageIdAdapter(context, idToStringList);
 
-        if(onItemClickListener == null){
-            imgView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            ListView imgView = new ListView(context);
+            imgView.setAdapter(adapter);
+            builder.setView(imgView);
+
+            if(onItemClickListener == null){
+                imgView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        IdStringPair pairSelected = adapter.getItem(position);
+
+                        // Launch the next dialog to set the card's trext
+                        launchTodoTextDialog(pairSelected, null, null);
+                        Log.d(DEBUG_TAG, "Clicked on: " + pairSelected.toString());
+                        addTodoDialog.dismiss();
+                    }
+                });
+            }
+            else{
+                imgView.setOnItemClickListener(onItemClickListener);
+            }
+
+            builder.setNegativeButton(R.string.eas_cancel, new DialogInterface.OnClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    IdStringPair pairSelected = adapter.getItem(position);
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-                    // Launch the next dialog to set the card's trext
-                    launchTodoTextDialog(pairSelected, null, null);
-                    Log.d(DEBUG_TAG, "Clicked on: " + pairSelected.toString());
-                    addTodoDialog.dismiss();
                 }
             });
-        }
-        else{
-            imgView.setOnItemClickListener(onItemClickListener);
-        }
-
-        builder.setNegativeButton(R.string.eas_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        builder.setTitle(R.string.eas_todo_select_image);
-        addTodoDialog = builder.create();
-        addTodoDialog.show();
+            builder.setTitle(R.string.eas_todo_select_image);
+            addTodoDialog = builder.create();
+            addTodoDialog.show();
     }
 
 
@@ -220,8 +145,8 @@ public class EditAidStationActivity extends AppCompatActivity {
 
         savedPair = pair;
         // Create the alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         builder.setView(inflater.inflate((R.layout.add_todo_text), null));
 
         if(onPositiveClickListener == null){
@@ -259,8 +184,7 @@ public class EditAidStationActivity extends AppCompatActivity {
 
     private void createTodoCard(int id, String userText){
 
-        ViewGroup todoLayout = (ViewGroup) findViewById(R.id.eas_todo_layout);
-        LayoutInflater inflater = getLayoutInflater();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View cardView = inflater.inflate(R.layout.todo_display_edit, null);
 
         TextView txt = (TextView) cardView.findViewById(R.id.tde_text_view);
@@ -319,9 +243,8 @@ public class EditAidStationActivity extends AppCompatActivity {
             }
         });
 
-        todoLayout.addView(cardView);
+        todoCards.addView(cardView);
     }
-
 
     private ViewGroup itemLayout;
     private String prevStr;
@@ -359,5 +282,6 @@ public class EditAidStationActivity extends AppCompatActivity {
         // We set a tag here with the id, so as not to create another cusom class
         img.setTag(new Integer(pair.id));
     }
+
 
 }

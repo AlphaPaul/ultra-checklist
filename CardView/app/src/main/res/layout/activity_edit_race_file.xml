@@ -29,27 +29,27 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/erf_save_button" />
 
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
+                android:text="@string/erf_aid_station_presentation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/erf_aid_station_layout">
-
-                <TextView
-                    android:text="@string/erf_aid_station_presentation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold" />
-
-            </LinearLayout>
+                android:id="@+id/textView"
+                android:textSize="18sp"
+                android:textStyle="normal|bold" />
 
             <Button
                 android:text="@string/erf_add_aid_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/erf_add_aid_button" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/erf_aid_station_layout">
+
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"

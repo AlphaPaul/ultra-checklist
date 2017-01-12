@@ -44,9 +44,16 @@ public class RaceFileData {
 
     }
 
+    public void ReplaceStation(int index, AidStationData data){
+        stationsData.set(index, data);
+    }
+
     public void ClearAllData(){
         stationsData.clear();
+    }
 
+    public AidStationData GetAidStationAtIndex(int index){
+        return stationsData.get(index);
     }
 
     private void addDummyAidStation(){

@@ -17,7 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:id="@+id/eas_scrollable_layout">
 
             <Button
                 android:text="@string/eas_save_button"
@@ -138,17 +139,18 @@
                     android:hint="@string/eas_dplus_to_next_hint" />
             </LinearLayout>
 
+            <Button
+                android:text="@string/eas_add_todo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eas_add_todo_button" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/eas_todo_layout">
 
-                <Button
-                    android:text="@string/eas_add_todo_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/eas_add_todo_button" />
             </LinearLayout>
 
         </LinearLayout>
